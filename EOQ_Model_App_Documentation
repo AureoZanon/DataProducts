@@ -1,0 +1,77 @@
+The EOQ Model App
+========================================================
+author: A. Zanon
+date: 12/21/2014
+autosize: true
+
+
+
+This presentation is a portion of the Developing Data Products course assignment offered by the Johns Hopkins University  in Coursera.
+
+
+
+Slide 2: The Economic Order Quantity
+========================================================
+
+Supply Chain managers are challenged to define the size of orders in order to minimize cost. On one hand you have the cost to place a single order and the forecasted annual demand. On the other hand you have the inventory carrying cost and the purchase cost. The Economic Order Quantity model, developed over 100 years ago by the engineer Ford Harris and presented at the "Factory, The Magazine of Management" [article] (http://userhome.brooklyn.cuny.edu/irudowsky/CIS10.31/articles/EOQModel-OriginalPaper.pdf), defines the order size that minimize the cost. The EQO is calculated given the following input variables:
+
+- Purchase Cost
+- Inventory Carrying Cost
+- Annual Forecasted Demand
+- Ordering Cost
+
+<small>
+Note: Even though this model was originally developed and published by Ford Harris, the EQO model is also known as the Wilson model in honor of R. H. Wilson, a consultant who applied it extensively.
+</small>
+
+Slide 3: The EOQ App
+========================================================
+
+The EOQ App was developed using the Wilson EOQ formula and uses the fucntion below:
+
+
+
+```{r}
+EOQ <- function(PurchaseCost,
+                CarryingCost,
+                OrderingCost,
+                Demand) 
+  
+  round(
+    sqrt(
+      (2*OrderingCost*Demand)/
+      (PurchaseCost*CarryingCost/100)), 
+    digits = 0)
+```
+
+
+
+
+Slide 4: Ordering Cost vs. EOQ
+========================================================
+
+The relationship between the Ordering cost and the Economic order quantity, fixed the purchase cost, inventory carrying cost and demand is presented in the chart below:
+
+
+```{r, echo=FALSE}
+EOQ <- function(PurchaseCost,CarryingCost,OrderingCost,Demand) round(sqrt((2*OrderingCost*Demand)/(PurchaseCost*CarryingCost/100)), digits = 0)
+ct <- c(0:100)
+y <- EOQ(100,.15,1000,ct)
+plot(ct, y, type = "l", xlab="Ordering Cost [USD/unit]", ylab="EOQ [units/order]")
+```
+
+As expected, the higher the ordering cost the higher the economic order quantity fixed the other variables.
+
+Slide 5: Inventory Carrying Cost vs. EOQ
+========================================================
+
+The relationship between the Inventory Carrying cost and the Economic order quantity, fixed the purchase cost, ordering cost and demand is presented in the chart below:
+
+```{r, echo=FALSE}
+EOQ <- function(PurchaseCost,CarryingCost,OrderingCost,Demand) round(sqrt((2*OrderingCost*Demand)/(PurchaseCost*CarryingCost/100)), digits = 0)
+h <- c(0:100)
+y <- EOQ(100,h,1000,100)
+plot(h, y, type = "l", xlab="Inventory Carrying Cost [USD/USD/year]", ylab="EOQ [units/order]")
+```
+
+As expected, the higher the inventory carrying cost the lower the economic order quantity fixed the other variables.
